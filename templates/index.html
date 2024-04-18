@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App - Login/Cadastro</title>
+    <style>
+    body {
+      height: auto;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh; /* Alterado para min-height para garantir que o conteúdo seja exibido corretamente em dispositivos com conteúdo menor */
+      background: url('https://images.pexels.com/photos/1015568/pexels-photo-1015568.jpeg?auto=compress&cs=tinysrgb&w=600') center center/cover no-repeat; /* Imagem de fundo cobrindo toda a tela */
+      overflow: auto; /* Adicionado para permitir rolagem vertical */
+    }
+
+    .img-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(255, 165, 0, 0.5), rgba(255, 255, 255, 0.5)); /* Degradê semi-transparente laranja para branco da esquerda para a direita */
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 80%;
+      height: auto;
+      max-width: 800px;
+      padding: 40px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      align-content: space-between;
+      flex-direction: row;
+      gap: 40px;
+    }
+
+    .container h2 {
+      margin-top: 0;
+      margin-bottom: 20px; /* Adicionado para espaço entre os cabeçalhos e os formulários */
+    }
+
+    .form {
+      width: 100%; /* Alterado para ocupar toda a largura do container em dispositivos menores */
+      text-align: center;
+    }
+
+    .form-control {
+      margin-bottom: 20px;
+    }
+
+    .form-control label {
+      font-weight: bold;
+    }
+
+    .form-control input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .form-control small {
+      color: #f00;
+    }
+
+    .form-control.error input {
+      border-color: #f00;
+    }
+
+    .form-control.success input {
+      border-color: #0f0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #524202;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b37d00d1;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="img-container">
+      <div class="container">
+      <form id="cadastro-form" class="form" action="/cadastro" method="post">
+        <h2>Cadastro</h2>
+        <div class="form-control">
+          <label for="cadastro-telefone">Telefone:</label><br />
+          <input type="text" id="cadastro-telefone" name="telefone" /><br />
+        </div>
+        <div class="form-control">
+          <label for="cadastro-nome">Nome:</label><br />
+          <input type="text" id="cadastro-nome" name="nome" /><br />
+        </div>
+        <div class="form-control">
+          <label for="cadastro-senha">Senha:</label><br />
+          <input type="password" id="cadastro-senha" name="senha" /><br /><br />
+        </div>
+        <button type="submit" onclick="checkCadastroInputs()">Cadastrar</button>
+        <!-- Mudado para type="button" -->
+      </form>
+
+      <form id="login-form" class="form" method="POST" action="/login">
+        <h2>Login</h2>
+        <div class="form-control">
+          <label for="login-telefone">Telefone:</label><br />
+          <input type="text" id="login-telefone" name="telefone" /><br />
+        </div>
+        <div class="form-control">
+          <label for="login-senha">Senha:</label><br />
+          <input type="password" id="login-senha" name="senha" /><br /><br />
+        </div>
+        <button type="submit" onclick="checkLoginInputs()">Login</button>
+        <!-- Mudado para type="button" -->
+      </form>
+    </div>
+    </div>
+    
+
+    <script>
+      function checkCadastroInputs() {
+        const cadastroTelefone = document.getElementById("cadastro-telefone");
+        const cadastroNome = document.getElementById("cadastro-nome");
+        const cadastroSenha = document.getElementById("cadastro-senha");
+
+        const cadastroTelefoneValue = cadastroTelefone.value.trim();
+        const cadastroNomeValue = cadastroNome.value.trim();
+        const cadastroSenhaValue = cadastroSenha.value.trim();
+
+        if (cadastroTelefoneValue === "") {
+          setErrorFor(cadastroTelefone, "O telefone é obrigatório.");
+        } else {
+          setSuccessFor(cadastroTelefone);
+        }
+
+        if (cadastroNomeValue === "") {
+          setErrorFor(cadastroNome, "O nome é obrigatório.");
+        } else {
+          setSuccessFor(cadastroNome);
+        }
+
+        if (cadastroSenhaValue === "") {
+          setErrorFor(cadastroSenha, "A senha é obrigatória.");
+        } else {
+          setSuccessFor(cadastroSenha);
+        }
+      }
+
+      function checkLoginInputs() {
+        const loginTelefone = document.getElementById("login-telefone");
+        const loginSenha = document.getElementById("login-senha");
+
+        const loginTelefoneValue = loginTelefone.value.trim();
+        const loginSenhaValue = loginSenha.value.trim();
+
+        if (loginTelefoneValue === "") {
+          setErrorFor(loginTelefone, "O telefone é obrigatório.");
+        } else {
+          setSuccessFor(loginTelefone);
+        }
+
+        if (loginSenhaValue === "") {
+          setErrorFor(loginSenha, "A senha é obrigatória.");
+        } else {
+          setSuccessFor(loginSenha);
+        }
+      }
+
+      function setErrorFor(input, message) {
+        const formControl = input.parentElement;
+        const small = formControl.querySelector("small");
+
+        small.innerText = message;
+        formControl.className = "form-control error";
+      }
+
+      function setSuccessFor(input) {
+        const formControl = input.parentElement;
+        formControl.className = "form-control success";
+      }
+    </script>
+     <script src="/static/index.js"></script>
+  </body>
+</html>
